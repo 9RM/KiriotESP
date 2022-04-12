@@ -8,6 +8,7 @@ local ESP = {
     FaceCamera = false,
     Names = false,
     Distance = false,
+    Health = false;
     TeamColor = true,
     Thickness = 1.5,
     AttachShift = 1,
@@ -227,6 +228,21 @@ function boxBase:Update()
             self.Components.Distance.Visible = true
             self.Components.Distance.Position = Vector2.new(TagPos.X - 15, TagPos.Y)
             self.Components.Distance.Text = math.floor((cam.CFrame.p - cf.p).magnitude) .."m away"
+            self.Components.Distance.Color = color
+	else
+	    self.Components.Distance.Visible = false
+        end
+    else
+	self.Components.Distance.Visible = false
+    end
+	
+    if ESP.Health then
+        local TagPos, Vis5 = WorldToViewportPoint(cam, locs.TagPos.p)
+        
+        if Vis5 and cf and cf.Parent and cf.Parent:FindFirstChild'Humanoid' then
+            self.Components.Distance.Visible = true
+            self.Components.Distance.Position = Vector2.new(TagPos.X + 15, TagPos.Y)
+            self.Components.Distance.Text = cf.Parent.Humanoid.Health;
             self.Components.Distance.Color = color
 	else
 	    self.Components.Distance.Visible = false
