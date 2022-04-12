@@ -242,7 +242,7 @@ function boxBase:Update()
         if Vis5 and cf and cf.Parent and cf.Parent:FindFirstChild'Humanoid' then
             self.Components.Distance.Visible = true
             self.Components.Distance.Position = Vector2.new(TagPos.X + 15, TagPos.Y)
-            self.Components.Distance.Text = cf.Parent.Humanoid.Health;
+            self.Components.Distance.Text = tostring(cf.Parent.Humanoid.Health);
             self.Components.Distance.Color = color
 	else
 	    self.Components.Distance.Visible = false
