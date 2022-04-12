@@ -1,14 +1,15 @@
 --Settings--
 local ESP = {
     Enabled = false,
-    Boxes = true,
+    Boxes = false,
     BoxShift = CFrame.new(0,-1.5,0),
 	BoxSize = Vector3.new(4,6,0),
     Color = Color3.fromRGB(255, 170, 0),
     FaceCamera = false,
-    Names = true,
+    Names = false,
+    Distance = false,
     TeamColor = true,
-    Thickness = 2,
+    Thickness = 1.5,
     AttachShift = 1,
     TeamMates = true,
     Players = true,
@@ -228,10 +229,12 @@ function boxBase:Update()
             self.Components.Name.Text = self.Name
             self.Components.Name.Color = color
             
-            self.Components.Distance.Visible = true
-            self.Components.Distance.Position = Vector2.new(TagPos.X, TagPos.Y + 14)
-            self.Components.Distance.Text = math.floor((cam.CFrame.p - cf.p).magnitude) .."m away"
-            self.Components.Distance.Color = color
+            if (ESP.Distance and Vis5) then
+                self.Components.Distance.Visible = true
+                self.Components.Distance.Position = Vector2.new(TagPos.X, TagPos.Y + 14)
+                self.Components.Distance.Text = math.floor((cam.CFrame.p - cf.p).magnitude) .."m away"
+                self.Components.Distance.Color = color
+            end
         else
             self.Components.Name.Visible = false
             self.Components.Distance.Visible = false
