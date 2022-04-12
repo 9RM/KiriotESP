@@ -225,7 +225,7 @@ function boxBase:Update()
         
         if Vis5 then
             self.Components.Distance.Visible = true
-            self.Components.Distance.Position = Vector2.new(TagPos.X - 15, TagPos.Y - 15)
+            self.Components.Distance.Position = Vector2.new(TagPos.X, TagPos.Y + 14)
             self.Components.Distance.Text = math.floor((cam.CFrame.p - cf.p).magnitude) .."m"
             self.Components.Distance.Color = color
 	else
