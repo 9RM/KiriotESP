@@ -226,7 +226,7 @@ function boxBase:Update()
         
         if Vis5 then
             self.Components.Distance.Visible = true
-            self.Components.Distance.Position = Vector2.new(TagPos.X - 15, TagPos.Y)
+            self.Components.Distance.Position = Vector2.new(TagPos.X, TagPos.Y + 14)
             self.Components.Distance.Text = math.floor((cam.CFrame.p - cf.p).magnitude) .."m away"
             self.Components.Distance.Color = color
 	else
@@ -241,7 +241,7 @@ function boxBase:Update()
         
         if Vis5 and cf and cf.Parent and cf.Parent:FindFirstChild'Humanoid' then
             self.Components.Distance.Visible = true
-            self.Components.Distance.Position = Vector2.new(TagPos.X + 15, TagPos.Y)
+            self.Components.Distance.Position = Vector2.new(TagPos.X - 15, TagPos.Y)
             self.Components.Distance.Text = tostring(cf.Parent.Humanoid.Health);
             self.Components.Distance.Color = color
 	else
