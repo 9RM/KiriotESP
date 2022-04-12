@@ -272,7 +272,7 @@ function boxBase:Update()
         if Vis7 then
             self.Components.Health.Visible = true
             self.Components.Health.Position = Vector2.new(TagPos.X - 15, TagPos.Y)
-            self.Components.Health.Text = tostring(locs.Humanoid.Health);
+            self.Components.Health.Text = tostring(self.PrimaryPart.Parent.Humanoid.Health);
             self.Components.Health.Color = color
 	else
 	    self.Components.Health.Visible = false
