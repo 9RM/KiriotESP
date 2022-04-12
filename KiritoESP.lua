@@ -269,10 +269,10 @@ function boxBase:Update()
     if ESP.Health then
         local TagPos, Vis7 = WorldToViewportPoint(cam, locs.TagPos.p)
         
-        if Vis7 and self:FindFirstChild'Humanoid' then
+        if Vis7 and plrs[self.Name] and plrs[self.Name].Character and plrs[self.Name].Character:FindFirstChild'Humanoid' then
             self.Components.Health.Visible = true
             self.Components.Health.Position = Vector2.new(TagPos.X - 15, TagPos.Y)
-            self.Components.Health.Text = plrs[self.Name].Humanoid.Health;
+            self.Components.Health.Text = plrs[self.Name].Character.Humanoid.Health;
             self.Components.Health.Color = color
 	else
 	    self.Components.Health.Visible = false
