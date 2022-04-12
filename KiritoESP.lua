@@ -235,21 +235,6 @@ function boxBase:Update()
     else
 	self.Components.Distance.Visible = false
     end
-	
-    if ESP.Health then
-        local TagPos, Vis5 = WorldToViewportPoint(cam, locs.TagPos.p)
-        
-        if Vis5 then
-            self.Components.Health.Visible = true
-            self.Components.Health.Position = Vector2.new(TagPos.X - 15, TagPos.Y)
-            self.Components.Health.Text = tostring(self.Humanoid.Health);
-            self.Components.Health.Color = color
-	else
-	    self.Components.Health.Visible = false
-        end
-    else
-	self.Components.Health.Visible = false
-    end
 
     if ESP.Names then
         local TagPos, Vis5 = WorldToViewportPoint(cam, locs.TagPos.p)
@@ -279,6 +264,21 @@ function boxBase:Update()
         end
     else
         self.Components.Tracer.Visible = false
+    end
+
+    if ESP.Health then
+        local TagPos, Vis7 = WorldToViewportPoint(cam, locs.TagPos.p)
+        
+        if Vis7 then
+            self.Components.Health.Visible = true
+            self.Components.Health.Position = Vector2.new(TagPos.X - 15, TagPos.Y)
+            self.Components.Health.Text = tostring(locs.Humanoid.Health);
+            self.Components.Health.Color = color
+	else
+	    self.Components.Health.Visible = false
+        end
+    else
+	self.Components.Health.Visible = false
     end
 end
 
