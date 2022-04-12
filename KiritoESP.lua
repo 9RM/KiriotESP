@@ -239,16 +239,16 @@ function boxBase:Update()
     if ESP.Health then
         local TagPos, Vis5 = WorldToViewportPoint(cam, locs.TagPos.p)
         
-        if Vis5 and cf and cf.Parent and cf.Parent:FindFirstChild'Humanoid' then
-            self.Components.Distance.Visible = true
-            self.Components.Distance.Position = Vector2.new(TagPos.X - 15, TagPos.Y)
-            self.Components.Distance.Text = tostring(cf.Parent.Humanoid.Health);
-            self.Components.Distance.Color = color
+        if Vis5 then
+            self.Components.Health.Visible = true
+            self.Components.Health.Position = Vector2.new(TagPos.X - 15, TagPos.Y)
+            self.Components.Health.Text = tostring(self.Humanoid.Health);
+            self.Components.Health.Color = color
 	else
-	    self.Components.Distance.Visible = false
+	    self.Components.Health.Visible = false
         end
     else
-	self.Components.Distance.Visible = false
+	self.Components.Health.Visible = false
     end
 
     if ESP.Names then
@@ -322,6 +322,13 @@ function ESP:Add(obj, options)
         Visible = self.Enabled and self.Names
 	})
 	box.Components["Distance"] = Draw("Text", {
+		Color = box.Color,
+		Center = true,
+		Outline = true,
+        Size = 19,
+        Visible = self.Enabled and self.Names
+	})
+	box.Components["Health"] = Draw("Text", {
 		Color = box.Color,
 		Center = true,
 		Outline = true,
