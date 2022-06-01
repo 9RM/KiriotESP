@@ -1,18 +1,23 @@
 --Settings--
 local ESP = {
     Enabled = false,
-    Boxes = false,
+    Boxes = true,
     BoxShift = CFrame.new(0,-1.5,0),
 	BoxSize = Vector3.new(4,6,0),
     Color = Color3.fromRGB(255, 170, 0),
     FaceCamera = false,
-    Names = false,
+    Names = true,
     Distance = false,
     TeamColor = true,
-    Thickness = 1.5,
+    Thickness = 2,
     AttachShift = 1,
     TeamMates = true,
     Players = true,
+    Health = true,
+    HealthOffsetX = 7,
+    HealthOffsetY = -2.9,
+    Items = false,
+    ItemOffset = 19,
     
     Objects = setmetatable({}, {__mode="kv"}),
     Overrides = {}
@@ -219,21 +224,6 @@ function boxBase:Update()
     else
         self.Components.Quad.Visible = false
     end
-    
-    if ESP.Distance then
-        local TagPos, Vis5 = WorldToViewportPoint(cam, locs.TagPos.p)
-        
-        if Vis5 then
-            self.Components.Distance.Visible = true
-            self.Components.Distance.Position = Vector2.new(TagPos.X, TagPos.Y + 14)
-            self.Components.Distance.Text = math.floor((cam.CFrame.p - cf.p).magnitude) .."m"
-            self.Components.Distance.Color = color
-	else
-	    self.Components.Distance.Visible = false
-        end
-    else
-	self.Components.Distance.Visible = false
-    end
 
     if ESP.Names then
         local TagPos, Vis5 = WorldToViewportPoint(cam, locs.TagPos.p)
@@ -250,6 +240,21 @@ function boxBase:Update()
         self.Components.Name.Visible = false
     end
     
+    if ESP.Distance then
+        local TagPos, Vis5 = WorldToViewportPoint(cam, locs.TagPos.p)
+        
+        if Vis5 then
+            self.Components.Distance.Visible = true
+            self.Components.Distance.Position = Vector2.new(TagPos.X, TagPos.Y + 14)
+            self.Components.Distance.Text = math.floor((cam.CFrame.p - cf.p).magnitude) .."m"
+            self.Components.Distance.Color = color
+	    else
+	        self.Components.Distance.Visible = false
+        end
+    else
+	    self.Components.Distance.Visible = false
+    end
+    
     if ESP.Tracers then
         local TorsoPos, Vis6 = WorldToViewportPoint(cam, locs.Torso.p)
 
@@ -263,6 +268,54 @@ function boxBase:Update()
         end
     else
         self.Components.Tracer.Visible = false
+    end
+    
+    if ESP.Health and self.Object and self.Object:FindFirstChild'Head' and self.Object:FindFirstChild'Torso' then
+        local HeadPos, Vis7 = WorldToViewportPoint(cam, self.Object.Head.Position)
+        local TorsoPos, Vis8 = WorldToViewportPoint(cam, self.Object.Torso.Position)
+        
+        if Vis7 or Vis8 then
+            local s = math.clamp((Vector2.new(HeadPos.X, HeadPos.Y) - Vector2.new(TorsoPos.X, TorsoPos.Y)).magnitude, 2, math.huge)
+            local b = (Vector2.new(TorsoPos.X - s, TorsoPos.Y - s*2) - Vector2.new(TorsoPos.X - s, TorsoPos.Y + s*2)).magnitude
+            local offset = self.Object.Humanoid.Health/self.Object.Humanoid.MaxHealth * b
+            
+            local hOffsetX = ESP.HealthOffsetX
+            local hOffsetY = ESP.HealthOffsetY
+            self.Components.Health.Visible = true
+            self.Components.Health2.Visible = true
+            
+            self.Components.Health2.From = Vector2.new(TorsoPos.X - s - hOffsetX, TorsoPos.Y - s*hOffsetY)
+            self.Components.Health2.To = Vector2.new(TorsoPos.X - s - hOffsetX, TorsoPos.Y - s*hOffsetY - offset)
+            
+            self.Components.Health.From = Vector2.new(TorsoPos.X - s - hOffsetX, TorsoPos.Y - s*hOffsetY);
+            self.Components.Health.To = Vector2.new(TorsoPos.X - s - hOffsetX, TorsoPos.Y - s*hOffsetY);
+            
+            local g = Color3.fromRGB(0, 255, 8)
+            local r = Color3.fromRGB(255, 0, 0)
+            self.Components.Health2.Color = r:lerp(g, self.Object.Humanoid.Health / self.Object.Humanoid.MaxHealth)
+        else
+            self.Components.Health.Visible = false
+            self.Components.Health2.Visible = false
+        end
+    else
+        self.Components.Health.Visible = false
+        self.Components.Health2.Visible = false
+    end
+    
+    if ESP.Items and self.Object and self.Object:FindFirstChildWhichIsA'Tool' and self.Object:FindFirstChild'Torso' then
+        local TorsoPos, Vis9 = WorldToViewportPoint(cam, self.Object.Torso.Position)
+        
+        if Vis9 then
+            local ItemOffset = ESP.ItemOffset
+            self.Components.Items.Text = tostring(self.Object:FindFirstChildWhichIsA'Tool'.Name)
+            self.Components.Items.Position = Vector2.new(TorsoPos.X, TorsoPos.Y + ItemOffset)
+            self.Components.Items.Visible = true
+            self.Components.Items.Color = color
+        else
+            self.Components.Items.Visible = false
+        end
+    else
+        self.Components.Items.Visible = false
     end
 end
 
@@ -302,15 +355,32 @@ function ESP:Add(obj, options)
 		Color = box.Color,
 		Center = true,
 		Outline = true,
-        Size = 15,
+        Size = 19,
         Visible = self.Enabled and self.Names
+	})
+	box.Components["Items"] = Draw("Text", {
+	    Color = box.Color,
+	    Center = true,
+	    Outline = true,
+	    Size = 19,
+	    Visible = self.Enabled and self.Items
+	})
+	box.Components["Health"] = Draw("Line", {
+	    Transparency = 1,
+	    Thickness = 4,
+	    Visible = self.Enabled and self.Health
+	})
+	box.Components["Health2"] = Draw("Line", {
+	    Transparency = 1,
+	    Thickness = 2,
+	    Visible = self.Enabled and self.Health
 	})
 	box.Components["Distance"] = Draw("Text", {
 		Color = box.Color,
 		Center = true,
 		Outline = true,
-        Size = 15,
-        Visible = self.Enabled and self.Distance
+        Size = 19,
+        Visible = self.Enabled and self.Names
 	})
 	
 	box.Components["Tracer"] = Draw("Line", {
