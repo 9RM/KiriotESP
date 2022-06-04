@@ -15,7 +15,7 @@ local ESP = {
     Players = true,
     Health = true,
     HealthOffsetX = 4,
-    HealthOffsetY = -2.9,
+    HealthOffsetY = -2,
     Items = false,
     ItemOffset = 19,
     
@@ -219,12 +219,15 @@ function boxBase:Update()
         self.Components.Quad.Visible = false
     end
 
-    if ESP.Names then
-        local TagPos, Vis5 = WorldToViewportPoint(cam, locs.TagPos.p)
+    if ESP.Names and self.Object and self.Object:FindFirstChild'HumanoidRootPart' then
+        local RootPart, Vis2 = WorldToViewportPoint(cam, self.Object.HumanoidRootPart.Position)
         
-        if Vis5 then
+        if Vis2 then
+            local Head = WorldToViewportPoint(cam, self.Object.Head.Position)
+            local DistanceOff = math.clamp((Vector2.new(Head.X, Head.Y) - Vector2.new(RootPart.X, RootPart.Y)).Magnitude, 2, math.huge)
+            
             self.Components.Name.Visible = true
-            self.Components.Name.Position = Vector2.new(TagPos.X, TagPos.Y)
+            self.Components.Name.Position = Vector2.new(Head.X, Head.Y - DistanceOff * -3)
             self.Components.Name.Text = self.Name
             self.Components.Name.Color = color
         else
@@ -297,12 +300,15 @@ function boxBase:Update()
     end
     
     if ESP.Items and self.Object and self.Object:FindFirstChildWhichIsA'Tool' and self.Object:FindFirstChild'Torso' then
-        local TorsoPos, Vis8 = WorldToViewportPoint(cam, self.Object.Torso.Position)
+        local RootPart, Vis9 = WorldToViewportPoint(cam, self.Object.HumanoidRootPart.Position)
         
         if Vis9 then
+            local Head = WorldToViewportPoint(cam, self.Object.Head.Position)
+            local DistanceOff = math.clamp((Vector2.new(Head.X, Head.Y) - Vector2.new(RootPart.X, RootPart.Y)).Magnitude, 2, math.huge)
+        
             local ItemOffset = ESP.ItemOffset
             self.Components.Items.Text = tostring(self.Object:FindFirstChildWhichIsA'Tool'.Name)
-            self.Components.Items.Position = Vector2.new(TorsoPos.X, TorsoPos.Y + ItemOffset)
+            self.Components.Items.Position = Vector2.new(Head.X, Head.Y - DistanceOff * ItemOffset)
             self.Components.Items.Visible = true
             self.Components.Items.Color = color
         else
