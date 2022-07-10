@@ -18,6 +18,7 @@ local ESP = {
     HealthOffsetY = -2,
     Items = false,
     ItemOffset = 19,
+    ItemTextSize = 17,
     
     Objects = setmetatable({}, {__mode="kv"}),
     Overrides = {}
@@ -369,7 +370,7 @@ function ESP:Add(obj, options)
 	    Color = box.Color,
 	    Center = true,
 	    Outline = true,
-	    Size = 19,
+	    Size = self.ItemTextSize,
 	    Visible = self.Enabled and self.Items
 	})
 	box.Components["Health"] = Draw("Line", {
