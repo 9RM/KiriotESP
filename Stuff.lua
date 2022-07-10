@@ -310,7 +310,11 @@ function boxBase:Update()
             local DistanceOff = math.clamp((Vector2.new(Head.X, Head.Y) - Vector2.new(RootPart.X, RootPart.Y)).Magnitude, 2, math.huge)
         
             local ItemOffset = ESP.ItemOffset
-            self.Components.Items.Text = tostring(self.Object:FindFirstChildWhichIsA'Tool'.Name)
+	    if self.Object:FindFirstChild'Equipped' and self.Object.Equipped:FindFirstChildWhichIsA'Model' then
+            	self.Components.Items.Text = tostring(self.Object.Equipped:FindFirstChildWhichIsA'Model'.Name)
+	    elseif self.Object:FindFirstChild'Equipped' and not self.Object.Equipped:FindFirstChildWhichIsA'Model' then
+		self.Components.Items.Text = 'N/A'
+	    end
             self.Components.Items.Position = Vector2.new(Head.X, Head.Y - DistanceOff * ItemOffset)
             self.Components.Items.Visible = true
             self.Components.Items.Color = color
