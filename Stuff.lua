@@ -275,7 +275,7 @@ function boxBase:Update()
             local DistanceOff = math.clamp((Vector2.new(Head.X, Head.Y) - Vector2.new(RootPart.X, RootPart.Y)).Magnitude, 2, math.huge)
             local b = (Vector2.new(RootPart.X - DistanceOff, RootPart.Y - DistanceOff*2) - Vector2.new(RootPart.X - DistanceOff, RootPart.Y + DistanceOff*2)).Magnitude
             
-            local offset = self.Object.Stats.Health.Base/100 * b
+            local offset = self.Object.Stats.Health.Base.Value/100 * b
             local hOffsetX = ESP.HealthOffsetX
             local hOffsetY = ESP.HealthOffsetY
             self.Components.Health.Visible = true
