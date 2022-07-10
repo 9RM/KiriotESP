@@ -371,7 +371,7 @@ function ESP:Add(obj, options)
 	    Color = box.Color,
 	    Center = true,
 	    Outline = true,
-	    Size = 19,
+	    Size = self.ItemTextSize,
 	    Visible = self.Enabled and self.Items
 	})
 	box.Components["Health"] = Draw("Line", {
