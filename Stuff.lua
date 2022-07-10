@@ -270,12 +270,15 @@ function boxBase:Update()
     if ESP.Health then
         local RootPart, Vis7 = WorldToViewportPoint(cam, self.PrimaryPart.Position)
         
-        if Vis7 and self.Object:FindFirstChild'Stats' and self.Object.Stats:FindFirstChild'Health' and self.Object.Stats.Health:FindFirstChild'Base' then
+        if Vis7 then
             local Head = WorldToViewportPoint(cam, self.Object.Head.Position)
             local DistanceOff = math.clamp((Vector2.new(Head.X, Head.Y) - Vector2.new(RootPart.X, RootPart.Y)).Magnitude, 2, math.huge)
             local b = (Vector2.new(RootPart.X - DistanceOff, RootPart.Y - DistanceOff*2) - Vector2.new(RootPart.X - DistanceOff, RootPart.Y + DistanceOff*2)).Magnitude
-            
-            local offset = self.Object.Stats.Health.Base.Value/100 * b
+            local offset = nil;
+			
+	    if self.Object:FindFirstChild'Stats' and self.Object.Stats:FindFirstChild'Health' and self.Object.Stats.Health:FindFirstChild'Base' then
+                offset = self.Object.Stats.Health.Base.Value/100 * b
+	    end
             local hOffsetX = ESP.HealthOffsetX
             local hOffsetY = ESP.HealthOffsetY
             self.Components.Health.Visible = true
