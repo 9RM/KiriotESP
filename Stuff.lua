@@ -289,7 +289,7 @@ function boxBase:Update()
             
             local g = Color3.fromRGB(0, 255, 8)
             local r = Color3.fromRGB(255, 0, 0)
-            self.Components.Health2.Color = r:lerp(g, self.Object.Humanoid.Health / self.Object.Humanoid.MaxHealth)
+            self.Components.Health2.Color = r:lerp(g, self.Object.Stats.Health.Base.Value / 100)
         else
             self.Components.Health.Visible = false
             self.Components.Health2.Visible = false
