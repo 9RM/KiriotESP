@@ -318,6 +318,7 @@ function boxBase:Update()
 	    end
             self.Components.Items.Position = Vector2.new(Head.X, Head.Y - DistanceOff * ItemOffset)
             self.Components.Items.Visible = true
+	    self.Components.Items.Size = ESP.ItemTextSize
             self.Components.Items.Color = color
         else
             self.Components.Items.Visible = false
@@ -370,7 +371,7 @@ function ESP:Add(obj, options)
 	    Color = box.Color,
 	    Center = true,
 	    Outline = true,
-	    Size = self.ItemTextSize,
+	    Size = 19,
 	    Visible = self.Enabled and self.Items
 	})
 	box.Components["Health"] = Draw("Line", {
