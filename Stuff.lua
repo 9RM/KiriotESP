@@ -204,7 +204,7 @@ function boxBase:Update()
         local RootPart, Vis = WorldToViewportPoint(cam, self.PrimaryPart.Position)
         
         if self.Components.Quad and Vis then
-            local Head = WorldToViewportPoint(cam, self.PrimaryPart.Position)
+            local Head = WorldToViewportPoint(cam, self.Object.Head.Position)
             local DistanceOff = math.clamp((Vector2.new(Head.X, Head.Y) - Vector2.new(RootPart.X, RootPart.Y)).Magnitude, 2, math.huge)
             
             self.Components.Quad.Visible = true
